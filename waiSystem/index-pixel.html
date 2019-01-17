@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+    <canvas id="canvas">
+    </canvas>
+
+<script>
+  var canvas = document.getElementById('canvas');
+  canvas.width = 400;
+  canvas.height = 400;
+  var ctx = canvas.getContext("2d");
+  var image = new Image();
+  image.onload = function()
+  {
+    ctx.drawImage(image,0,0,canvas.width,canvas.height);
+    var pixelData = ctx.getImageData(0,0,canvas.width,canvas.height);
+    for ( var y = 0; y < 400 ; y++)
+    {
+      for ( var x = 0; x < 400 ; x++)
+      {
+        var index = (x + y * 400) * 4;
+        if ( y > 0 && y < 400 && x > 0 && x < 400)
+        {
+           var j = Math.ceil(Math.random()*30);
+           pixelData.data[index] = pixelData.data[index+j*4];
+           pixelData.data[index+1] = pixelData.data[index-j*4];
+           pixelData.data[index+2] = pixelData.data[index+2*4];
+        }
+      }
+    }
+    console.log(pixelData)
+    ctx.putImageData(pixelData,0,0);
+  }
+  image.src = './wai.jpg';
+</script>
+</body>
+</html>
